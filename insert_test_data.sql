@@ -1,4 +1,4 @@
-USE food_macro_db;
+USE HEALTH;
 
 -- default login for marking
 INSERT IGNORE INTO users (username, password) VALUES ('gold', 'smiths');
