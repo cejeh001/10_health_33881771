@@ -1,0 +1,14 @@
+<%- include('partials/header') %>
+<section>
+  <h2>Login</h2>
+  <% if (error) { %>
+    <p class="error"><%= error %></p>
+  <% } %>
+  <form method="post" action="/auth/login">
+    <label>Username: <input name="username" required /></label><br/>
+    <label>Password: <input name="password" type="password" required /></label><br/>
+    <button type="submit">Login</button>
+  </form>
+  <p>For marking, use username <strong>gold</strong> and password <strong>smiths</strong>.</p>
+</section>
+<%- include('partials/footer') %>

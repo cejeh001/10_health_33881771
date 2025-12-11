@@ -1,0 +1,6 @@
+home=http://<your-deploy-url>/
+about=http://<your-deploy-url>/about
+foods=http://<your-deploy-url>/foods
+search=http://<your-deploy-url>/foods/search?q=banana
+add_food=http://<your-deploy-url>/foods/add
+login=http://<your-deploy-url>/auth/login

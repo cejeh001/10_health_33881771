@@ -1,0 +1,23 @@
+<%- include('partials/header') %>
+<section>
+  <h2>All Foods</h2>
+  <% if (foods.length === 0) { %>
+    <p>No foods found.</p>
+  <% } else { %>
+    <table>
+      <thead><tr><th>Name</th><th>Calories</th><th>Protein</th><th>Carbs</th><th>Fats</th></tr></thead>
+      <tbody>
+        <% foods.forEach(function(f){ %>
+          <tr>
+            <td><%= f.name %></td>
+            <td><%= f.calories %></td>
+            <td><%= f.protein %></td>
+            <td><%= f.carbs %></td>
+            <td><%= f.fats %></td>
+          </tr>
+        <% }); %>
+      </tbody>
+    </table>
+  <% } %>
+</section>
+<%- include('partials/footer') %>
