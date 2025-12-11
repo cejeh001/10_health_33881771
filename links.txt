@@ -1,6 +1,6 @@
-home=http://<your-deploy-url>/
-about=http://<your-deploy-url>/about
-foods=http://<your-deploy-url>/foods
-search=http://<your-deploy-url>/foods/search?q=banana
-add_food=http://<your-deploy-url>/foods/add
-login=http://<your-deploy-url>/auth/login
+home=http://www.doc.gold.ac.uk/usr/210/
+about=http://www.doc.gold.ac.uk/usr/210/about
+foods=http://www.doc.gold.ac.uk/usr/210/foods
+search=http://www.doc.gold.ac.uk/usr/210/foods/search?q=banana
+add_food=http://www.doc.gold.ac.uk/usr/210/foods/add
+login=http://www.doc.gold.ac.uk/usr/210/auth/login
