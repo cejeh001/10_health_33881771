@@ -11,7 +11,8 @@ const pool = mysql.createPool({
   host: 'localhost',
   user: 'food_app',
   password: 'qwertyuiop',
-  database: 'food_macro_db',
+  // database: 'food_macro_db',
+  database: 'HEALTH',
   waitForConnections: true,
   connectionLimit: 10,
   queueLimit: 0
