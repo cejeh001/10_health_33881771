@@ -1,34 +1,45 @@
 const express = require('express');
 const router = express.Router();
 
-// login page
 router.get('/login', (req, res) => {
-  res.render('login', { error: null });
+    if (req.session.user) {
+        return res.redirect('/foods');
+    }
+    res.render('login', { 
+        error: null,
+        user: null 
+    });
 });
 
-// handle login
 router.post('/login', async (req, res) => {
-  const { username, password } = req.body;
-  // Basic login against the users table
-  const pool = req.app.locals.pool;
-  try {
-    const [rows] = await pool.query('SELECT * FROM users WHERE username = ? AND password = ?', [username, password]);
-    if (rows.length > 0) {
-      req.session.user = { id: rows[0].id, username: rows[0].username };
-      return res.redirect('/');
-    } else {
-      return res.render('login', { error: 'Invalid credentials' });
+    const { username, password } = req.body;
+    const pool = req.app.locals.pool;
+    
+    try {
+        const [rows] = await pool.query('SELECT * FROM users WHERE username = ?', [username]);
+        
+        if (rows.length > 0 && rows[0].password === password) {
+            req.session.user = username;
+            req.session.success = `Welcome back, ${username}!`;
+            res.redirect('/foods');
+        } else {
+            res.render('login', { 
+                error: 'Invalid username or password.',
+                user: null 
+            });
+        }
+    } catch (err) {
+        console.error('Login error:', err);
+        res.render('login', { 
+            error: 'Login failed. Please try again.',
+            user: null 
+        });
     }
-  } catch (err) {
-    console.error(err);
-    return res.render('login', { error: 'Database error' });
-  }
 });
 
 router.get('/logout', (req, res) => {
-  req.session.destroy(() => {
+    req.session.destroy();
     res.redirect('/');
-  });
 });
 
 module.exports = router;

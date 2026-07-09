@@ -6,16 +6,19 @@ const mysql = require('mysql2/promise');
 const app = express();
 const PORT = process.env.PORT || 8000;
 
-// MySQL connection pool - update credentials if needed
+// const flash = require('connect-flash');
+// app.use(flash());
+
 const pool = mysql.createPool({
   host: 'localhost',
-  user: 'food_app',
+  user: 'health_app',      // Changed from 'food_app'
   password: 'qwertyuiop',
-  database: 'food_macro_db',
+  database: 'health',      // Changed from 'food_macro_db'
   waitForConnections: true,
   connectionLimit: 10,
   queueLimit: 0
 });
+
 
 
 // make pool available to routes via app.locals
@@ -39,6 +42,13 @@ app.use((req, res, next) => {
   res.locals.user = req.session.user || null;
   next();
 });
+
+// Make flash available to views
+// app.use((req, res, next) => {
+//     res.locals.success = req.flash('success');
+//     res.locals.error = req.flash('error');
+//     next();
+// });
 
 // Routes
 const pagesRouter = require('./routes/pages');
