@@ -2,11 +2,11 @@ const express = require('express');
 const router = express.Router();
 
 // Get base path from environment
-const BASE_PATH = process.env.HEALTH_BASE_PATH || '';
+const basePath = req.app.locals.basePath || '';
 
 router.get('/login', (req, res) => {
     if (req.session.user) {
-        return res.redirect(BASE_PATH + '/foods');
+        return res.redirect(basePath + '/foods');
     }
     res.render('login', { 
         error: null,
@@ -23,7 +23,7 @@ router.post('/login', async (req, res) => {
         
         if (rows.length > 0 && rows[0].password === password) {
             req.session.user = username;
-            res.redirect(BASE_PATH + '/foods');
+            res.redirect(basePath + '/foods');
         } else {
             res.render('login', { 
                 error: 'Invalid username or password.',
@@ -41,7 +41,7 @@ router.post('/login', async (req, res) => {
 
 router.get('/logout', (req, res) => {
     req.session.destroy();
-    res.redirect(BASE_PATH + '/');
+    res.redirect(basePath + '/');
 });
 
 module.exports = router;

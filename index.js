@@ -21,7 +21,8 @@ const pool = mysql.createPool({
 // make pool available to routes via app.locals
 app.locals.pool = pool;
 
-const BASE_PATH = process.env.HEALTH_BASE_PATH || '';
+const BASE_PATH = process.env.HEALTH_BASE_PATH || 'http://localhost:8000';
+const BASE_URL = process.env.HEALTH_BASE_PATH || '';
 app.locals.basePath = BASE_PATH;
 
 
