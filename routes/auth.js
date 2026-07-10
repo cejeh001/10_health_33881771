@@ -15,14 +15,18 @@ router.post('/login', async (req, res) => {
     const { username, password } = req.body;
     const pool = req.app.locals.pool;
     
+    console.log('Login attempt:', username, password); // ✅ Add this
+    
     try {
         const [rows] = await pool.query('SELECT * FROM users WHERE username = ?', [username]);
+        console.log('Query result:', rows); // ✅ Add this
         
         if (rows.length > 0 && rows[0].password === password) {
+            console.log('Login successful!'); // ✅ Add this
             req.session.user = username;
-            req.session.success = `Welcome back, ${username}!`;
             res.redirect('/foods');
         } else {
+            console.log('Login failed - no match'); // ✅ Add this
             res.render('login', { 
                 error: 'Invalid username or password.',
                 user: null 
