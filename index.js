@@ -2,30 +2,28 @@ const express = require('express');
 const session = require('express-session');
 const path = require('path');
 const mysql = require('mysql2/promise');
+require('dotenv').config();  // ✅ Load environment variables
 
 const app = express();
 const PORT = process.env.PORT || 8000;
 
+// ✅ Get base path from environment
+const BASE_PATH = process.env.HEALTH_BASE_PATH || '';
+
+// MySQL connection pool
 const pool = mysql.createPool({
-  host: 'localhost',
-  user: 'health_app',      
-  password: 'qwertyuiop',
-  database: 'health',     
+  host: process.env.HEALTH_HOST || 'localhost',
+  user: process.env.HEALTH_USER || 'health_app',
+  password: process.env.HEALTH_PASSWORD || 'qwertyuiop',
+  database: process.env.HEALTH_DATABASE || 'health',
   waitForConnections: true,
   connectionLimit: 10,
   queueLimit: 0
 });
 
-
-
-// make pool available to routes via app.locals
+// Make pool and base path available to routes
 app.locals.pool = pool;
-
-const BASE_PATH = process.env.HEALTH_BASE_PATH || 'http://localhost:8000';
-const BASE_URL = process.env.HEALTH_BASE_PATH || '';
 app.locals.basePath = BASE_PATH;
-
-
 
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
@@ -34,24 +32,18 @@ app.use(express.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(session({
-  secret: 'replace_this_secret_in_prod',
+  secret: 'your-secret-key-change-this',
   resave: false,
   saveUninitialized: false,
   cookie: { maxAge: 1000 * 60 * 60 }
 }));
 
-// simple middleware to expose user to views
+// Make user available to all views
 app.use((req, res, next) => {
   res.locals.user = req.session.user || null;
+  res.locals.basePath = BASE_PATH;  // ✅ Make base path available to views
   next();
 });
-
-// Make flash available to views
-// app.use((req, res, next) => {
-//     res.locals.success = req.flash('success');
-//     res.locals.error = req.flash('error');
-//     next();
-// });
 
 // Routes
 const pagesRouter = require('./routes/pages');
@@ -64,4 +56,5 @@ app.use('/foods', foodsRouter);
 
 app.listen(PORT, () => {
   console.log(`Food Macro Tracker listening on port ${PORT}`);
+  console.log(`Base path: ${BASE_PATH || '(none - localhost)'}`);
 });

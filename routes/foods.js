@@ -13,26 +13,35 @@ function validateFoodData(name, calories) {
     return errors;
 }
 
+// ✅ Make base path available
+router.use((req, res, next) => {
+  res.locals.basePath = req.app.locals.basePath || '';
+  next();
+});
+
 // LIST all foods
 router.get('/', async (req, res) => {
     const pool = req.app.locals.pool;
+    const basePath = req.app.locals.basePath || '';
     try {
         const [rows] = await pool.query('SELECT * FROM foods ORDER BY name ASC');
         const success = req.session.success || null;
         req.session.success = null;
         res.render('foods', { 
             foods: rows,
-            user: req.session.user || null,  // ✅ ADDED
+            user: req.session.user || null,
             success: success,
-            error: null
+            error: null,
+            basePath: basePath
         });
     } catch (err) {
         console.error('Error fetching foods:', err);
         res.render('foods', { 
             foods: [],
-            user: req.session.user || null,  // ✅ ADDED
+            user: req.session.user || null,
             success: null,
-            error: 'Failed to load foods. Please try again.'
+            error: 'Failed to load foods. Please try again.',
+            basePath: basePath
         });
     }
 });
@@ -41,6 +50,7 @@ router.get('/', async (req, res) => {
 router.get('/search', async (req, res) => {
     const q = req.query.q || '';
     const pool = req.app.locals.pool;
+    const basePath = req.app.locals.basePath || '';
     try {
         const [rows] = await pool.query(
             'SELECT * FROM foods WHERE name LIKE ? ORDER BY name ASC', 
@@ -49,16 +59,18 @@ router.get('/search', async (req, res) => {
         res.render('search', { 
             foods: rows,
             q: q,
-            user: req.session.user || null,  // ✅ ADDED
-            error: null
+            user: req.session.user || null,
+            error: null,
+            basePath: basePath
         });
     } catch (err) {
         console.error('Error searching foods:', err);
         res.render('search', { 
             foods: [],
             q: q,
-            user: req.session.user || null,  // ✅ ADDED
-            error: 'Search failed. Please try again.'
+            user: req.session.user || null,
+            error: 'Search failed. Please try again.',
+            basePath: basePath
         });
     }
 });
@@ -66,41 +78,47 @@ router.get('/search', async (req, res) => {
 // ADD form (protected)
 router.get('/add', async (req, res) => {
     if (!req.session.user) {
-        return res.redirect('/auth/login');
+        const basePath = req.app.locals.basePath || '';
+        return res.redirect(basePath + '/auth/login');
     }
+    const basePath = req.app.locals.basePath || '';
     res.render('add_food', { 
         error: null,
-        user: req.session.user || null,  // ✅ ADDED
-        food: null
+        user: req.session.user || null,
+        food: null,
+        basePath: basePath
     });
 });
 
 // ADD food (POST)
 router.post('/add', async (req, res) => {
     if (!req.session.user) {
-        return res.redirect('/auth/login');
+        const basePath = req.app.locals.basePath || '';
+        return res.redirect(basePath + '/auth/login');
     }
 
     const { name, calories, protein, carbs, fats } = req.body;
+    const basePath = req.app.locals.basePath || '';
     
     const errors = validateFoodData(name, calories);
     if (errors.length > 0) {
         return res.render('add_food', { 
             error: errors.join('. '),
-            user: req.session.user || null,  // ✅ ADDED
-            food: null
+            user: req.session.user || null,
+            food: null,
+            basePath: basePath
         });
     }
 
     const pool = req.app.locals.pool;
     try {
-        // Check if food already exists
         const [existing] = await pool.query('SELECT * FROM foods WHERE name = ?', [name.trim()]);
         if (existing.length > 0) {
             return res.render('add_food', { 
                 error: `Food "${name}" already exists.`,
-                user: req.session.user || null,  // ✅ ADDED
-                food: null
+                user: req.session.user || null,
+                food: null,
+                basePath: basePath
             });
         }
 
@@ -110,13 +128,14 @@ router.post('/add', async (req, res) => {
         );
         
         req.session.success = `Food "${name}" added successfully!`;
-        res.redirect('/foods');
+        res.redirect(basePath + '/foods');
     } catch (err) {
         console.error('Error adding food:', err);
         res.render('add_food', { 
             error: 'Failed to add food. Please try again.',
-            user: req.session.user || null,  // ✅ ADDED
-            food: null
+            user: req.session.user || null,
+            food: null,
+            basePath: basePath
         });
     }
 });
@@ -124,43 +143,49 @@ router.post('/add', async (req, res) => {
 // EDIT form (protected)
 router.get('/edit/:id', async (req, res) => {
     if (!req.session.user) {
-        return res.redirect('/auth/login');
+        const basePath = req.app.locals.basePath || '';
+        return res.redirect(basePath + '/auth/login');
     }
 
     const foodId = req.params.id;
     const pool = req.app.locals.pool;
+    const basePath = req.app.locals.basePath || '';
     
     try {
         const [rows] = await pool.query('SELECT * FROM foods WHERE id = ?', [foodId]);
         if (rows.length === 0) {
-            return res.redirect('/foods');
+            return res.redirect(basePath + '/foods');
         }
         res.render('add_food', { 
             error: null,
-            user: req.session.user || null,  // ✅ ADDED
-            food: rows[0]
+            user: req.session.user || null,
+            food: rows[0],
+            basePath: basePath
         });
     } catch (err) {
         console.error('Error fetching food for edit:', err);
-        res.redirect('/foods');
+        res.redirect(basePath + '/foods');
     }
 });
 
 // UPDATE food (POST)
 router.post('/edit/:id', async (req, res) => {
     if (!req.session.user) {
-        return res.redirect('/auth/login');
+        const basePath = req.app.locals.basePath || '';
+        return res.redirect(basePath + '/auth/login');
     }
 
     const foodId = req.params.id;
     const { name, calories, protein, carbs, fats } = req.body;
+    const basePath = req.app.locals.basePath || '';
     
     const errors = validateFoodData(name, calories);
     if (errors.length > 0) {
         return res.render('add_food', { 
             error: errors.join('. '),
-            user: req.session.user || null,  // ✅ ADDED
-            food: { id: foodId, name, calories, protein, carbs, fats }
+            user: req.session.user || null,
+            food: { id: foodId, name, calories, protein, carbs, fats },
+            basePath: basePath
         });
     }
 
@@ -172,13 +197,14 @@ router.post('/edit/:id', async (req, res) => {
         );
         
         req.session.success = `Food "${name}" updated successfully!`;
-        res.redirect('/foods');
+        res.redirect(basePath + '/foods');
     } catch (err) {
         console.error('Error updating food:', err);
         res.render('add_food', { 
             error: 'Failed to update food. Please try again.',
-            user: req.session.user || null,  // ✅ ADDED
-            food: { id: foodId, name, calories, protein, carbs, fats }
+            user: req.session.user || null,
+            food: { id: foodId, name, calories, protein, carbs, fats },
+            basePath: basePath
         });
     }
 });
@@ -186,27 +212,29 @@ router.post('/edit/:id', async (req, res) => {
 // DELETE food (protected)
 router.post('/delete/:id', async (req, res) => {
     if (!req.session.user) {
-        return res.redirect('/auth/login');
+        const basePath = req.app.locals.basePath || '';
+        return res.redirect(basePath + '/auth/login');
     }
 
     const foodId = req.params.id;
     const pool = req.app.locals.pool;
+    const basePath = req.app.locals.basePath || '';
     
     try {
         const [rows] = await pool.query('SELECT name FROM foods WHERE id = ?', [foodId]);
         if (rows.length === 0) {
             req.session.success = 'Food already deleted.';
-            return res.redirect('/foods');
+            return res.redirect(basePath + '/foods');
         }
 
         const foodName = rows[0].name;
         await pool.query('DELETE FROM foods WHERE id = ?', [foodId]);
         
         req.session.success = `Food "${foodName}" deleted successfully!`;
-        res.redirect('/foods');
+        res.redirect(basePath + '/foods');
     } catch (err) {
         console.error('Error deleting food:', err);
-        res.redirect('/foods');
+        res.redirect(basePath + '/foods');
     }
 });
 
