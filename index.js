@@ -11,8 +11,8 @@ const PORT = process.env.PORT || 8000;
 
 const pool = mysql.createPool({
   host: 'localhost',
-  user: 'cejeh001@localhost',      
-  password: 'Chicken5',
+  user: 'health_app',      
+  password: 'qwertyuiop',
   database: 'health',     
   waitForConnections: true,
   connectionLimit: 10,
