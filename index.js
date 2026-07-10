@@ -12,10 +12,17 @@ const BASE_PATH = process.env.HEALTH_BASE_PATH || '';
 
 // MySQL connection pool
 const pool = mysql.createPool({
+<<<<<<< HEAD
   host: process.env.HEALTH_HOST || 'localhost',
   user: process.env.HEALTH_USER || 'health_app',
   password: process.env.HEALTH_PASSWORD || 'qwertyuiop',
   database: process.env.HEALTH_DATABASE || 'health',
+=======
+  host: 'localhost',
+  user: 'cejeh001@localhost',      
+  password: 'Chicken5',
+  database: 'health',     
+>>>>>>> parent of 3f102d1 (index.js pool update)
   waitForConnections: true,
   connectionLimit: 10,
   queueLimit: 0
