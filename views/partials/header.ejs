@@ -1,14 +1,21 @@
-<header>
-    <nav>
-        <a href="<%= basePath %>/">Home</a>
-        <a href="<%= basePath %>/about">About</a>
-        <a href="<%= basePath %>/foods">Foods</a>
-        <a href="<%= basePath %>/foods/search">Search</a>
-        <% if (user) { %>
-            <a href="<%= basePath %>/foods/add">Add Food</a>
-            <a href="<%= basePath %>/auth/logout">Logout (<%= user %>)</a>
-        <% } else { %>
-            <a href="<%= basePath %>/auth/login">Login</a>
-        <% } %>
-    </nav>
-</header>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Food Macro Tracker</title>
+    <link rel="stylesheet" href="<%= basePath %>/styles.css">
+</head>
+<body>
+    <header>
+        <nav>
+            <a href="<%= basePath %>/">Home</a>
+            <a href="<%= basePath %>/about">About</a>
+            <a href="<%= basePath %>/foods">Foods</a>
+            <a href="<%= basePath %>/foods/search">Search</a>
+            <% if (user) { %>
+                <a href="<%= basePath %>/foods/add">Add Food</a>
+                <a href="<%= basePath %>/auth/logout">Logout (<%= user %>)</a>
+            <% } else { %>
+                <a href="<%= basePath %>/auth/login">Login</a>
+            <% } %>
+        </nav>
+    </header>
