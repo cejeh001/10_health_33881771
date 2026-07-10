@@ -6,9 +6,6 @@ const mysql = require('mysql2/promise');
 const app = express();
 const PORT = process.env.PORT || 8000;
 
-// const flash = require('connect-flash');
-// app.use(flash());
-
 const pool = mysql.createPool({
   host: 'localhost',
   user: 'health_app',      
@@ -23,6 +20,11 @@ const pool = mysql.createPool({
 
 // make pool available to routes via app.locals
 app.locals.pool = pool;
+
+const BASE_PATH = process.env.HEALTH_BASE_PATH || '';
+app.locals.basePath = BASE_PATH;
+
+
 
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));

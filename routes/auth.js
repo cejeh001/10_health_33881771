@@ -1,9 +1,12 @@
 const express = require('express');
 const router = express.Router();
 
+// Get base path from environment
+const BASE_PATH = process.env.HEALTH_BASE_PATH || '';
+
 router.get('/login', (req, res) => {
     if (req.session.user) {
-        return res.redirect('/foods');
+        return res.redirect(BASE_PATH + '/foods');
     }
     res.render('login', { 
         error: null,
@@ -15,18 +18,13 @@ router.post('/login', async (req, res) => {
     const { username, password } = req.body;
     const pool = req.app.locals.pool;
     
-    console.log('Login attempt:', username); // Debug
-    
     try {
         const [rows] = await pool.query('SELECT * FROM users WHERE username = ?', [username]);
-        console.log('Found user:', rows.length > 0); // Debug
         
         if (rows.length > 0 && rows[0].password === password) {
             req.session.user = username;
-            console.log('Login successful, redirecting to /foods'); // Debug
-            res.redirect('/foods');
+            res.redirect(BASE_PATH + '/foods');
         } else {
-            console.log('Login failed'); // Debug
             res.render('login', { 
                 error: 'Invalid username or password.',
                 user: null 
@@ -43,7 +41,7 @@ router.post('/login', async (req, res) => {
 
 router.get('/logout', (req, res) => {
     req.session.destroy();
-    res.redirect('/');
+    res.redirect(BASE_PATH + '/');
 });
 
 module.exports = router;
