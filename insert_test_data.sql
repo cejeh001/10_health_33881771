@@ -9,3 +9,7 @@ INSERT INTO foods (name, calories, protein, carbs, fats) VALUES
   ('Brown Rice (100g cooked)', 111, 2.6, 23, 0.9),
   ('Banana (100g)', 89, 1.1, 23, 0.3),
   ('Almonds (30g)', 174, 6, 6.1, 15.2);
+  ('Eggs', 174, 6, 6.1, 15.2);
+  ('Apple', 60, 2, 1, 1);
+  ('Broccoli', 55, 4, 11, 0.6);
+  ('Salmon', 208, 20, 0, 13);

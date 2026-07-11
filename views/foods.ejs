@@ -1,23 +1,59 @@
 <%- include('partials/header') %>
-<section>
-  <h2>All Foods</h2>
-  <% if (foods.length === 0) { %>
-    <p>No foods found.</p>
-  <% } else { %>
-    <table>
-      <thead><tr><th>Name</th><th>Calories</th><th>Protein</th><th>Carbs</th><th>Fats</th></tr></thead>
-      <tbody>
-        <% foods.forEach(function(f){ %>
-          <tr>
-            <td><%= f.name %></td>
-            <td><%= f.calories %></td>
-            <td><%= f.protein %></td>
-            <td><%= f.carbs %></td>
-            <td><%= f.fats %></td>
-          </tr>
-        <% }); %>
-      </tbody>
-    </table>
-  <% } %>
-</section>
-<%- include('partials/footer') %>
+  <section>
+    <h2>All Foods</h2>
+    <% if (foods.length===0) { %>
+      <p>No foods found.</p>
+      <% } else { %>
+        <table>
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Calories</th>
+              <th>Protein</th>
+              <th>Carbs</th>
+              <th>Fats</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% foods.forEach(function(f){ %>
+              <tr>
+                <td>
+                  <%= f.name %>
+                </td>
+                <td>
+                  <%= f.calories %>
+                </td>
+                <td>
+                  <%= f.protein %>
+                </td>
+                <td>
+                  <%= f.carbs %>
+                </td>
+                <td>
+                  <%= f.fats %>
+                </td>
+
+                <td>
+                
+                  <% if (user) { %>
+                
+                    <a href="/foods/edit/<%= f.id %>">Edit</a>
+                
+                    <form action="/foods/delete/<%= f.id %>" method="POST" style="display:inline;">
+                      <button type="submit" onclick="return confirm('Delete this food?')">
+                        Delete
+                      </button>
+                    </form>
+                
+                    <% } %>
+                
+                </td>
+
+              </tr>
+              <% }); %>
+          </tbody>
+        </table>
+        <% } %>
+  </section>
+  <%- include('partials/footer') %>

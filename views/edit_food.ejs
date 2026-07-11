@@ -1,0 +1,38 @@
+<%- include('partials/header') %>
+
+    <section>
+
+        <h2>Edit Food</h2>
+
+        <% if(error){ %>
+            <p>
+                <%= error %>
+            </p>
+            <% } %>
+
+                <form method="POST">
+
+                    <label>Name</label>
+                    <input type="text" name="name" value="<%= food.name %>" required>
+
+                    <label>Calories</label>
+                    <input type="number" name="calories" value="<%= food.calories %>" required>
+
+                    <label>Protein</label>
+                    <input type="number" step="0.1" name="protein" value="<%= food.protein %>" required>
+
+                    <label>Carbs</label>
+                    <input type="number" step="0.1" name="carbs" value="<%= food.carbs %>" required>
+
+                    <label>Fats</label>
+                    <input type="number" step="0.1" name="fats" value="<%= food.fats %>" required>
+
+                    <button type="submit">
+                        Save Changes
+                    </button>
+
+                </form>
+
+    </section>
+
+    <%- include('partials/footer') %>

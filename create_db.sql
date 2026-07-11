@@ -1,6 +1,10 @@
 -- create database and tables
-CREATE DATABASE IF NOT EXISTS food_macro_db;
-USE food_macro_db;
+
+DROP TABLE IF EXISTS foods;
+DROP TABLE IF EXISTS users;
+
+CREATE DATABASE IF NOT EXISTS health;
+USE health;
 
 CREATE TABLE IF NOT EXISTS users (
   id INT AUTO_INCREMENT PRIMARY KEY,

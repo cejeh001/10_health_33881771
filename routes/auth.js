@@ -17,7 +17,7 @@ router.post('/login', async (req, res) => {
       req.session.user = { id: rows[0].id, username: rows[0].username };
       return res.redirect('/');
     } else {
-      return res.render('login', { error: 'Invalid credentials' });
+      return res.render('login', { error: 'Incorrect username or password' });
     }
   } catch (err) {
     console.error(err);

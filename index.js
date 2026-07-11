@@ -10,8 +10,8 @@ const PORT = process.env.PORT || 8000;
 const pool = mysql.createPool({
   host: process.env.DB_HOST || 'localhost',
   user: process.env.DB_USER || 'root',
-  password: process.env.DB_PASS || '',
-  database: process.env.DB_NAME || 'food_macro_db',
+  password: process.env.DB_PASS || 'Chicken5',
+  database: process.env.DB_NAME || 'health',
   waitForConnections: true,
   connectionLimit: 10,
   queueLimit: 0
@@ -47,6 +47,21 @@ const foodsRouter = require('./routes/foods');
 app.use('/', pagesRouter);
 app.use('/auth', authRouter);
 app.use('/foods', foodsRouter);
+
+
+
+
+
+app.use((req,res)=>{
+    res.status(404).render("404");
+});
+
+
+app.use((err,req,res,next)=>{
+    console.error(err);
+    res.status(500).render("error");
+});
+
 
 app.listen(PORT, () => {
   console.log(`Food Macro Tracker listening on port ${PORT}`);

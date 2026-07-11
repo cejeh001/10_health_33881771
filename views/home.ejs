@@ -8,4 +8,23 @@
     <li><a href="/foods/add">Add a food (login required)</a></li>
   </ul>
 </section>
+
+<section>
+  <h2>Featured Foods</h2>
+  <div class="featured-foods">
+    <% featuredFoods.forEach(food=> { %>
+      <div class="food-card">
+        <h3>
+          <%= food.name %>
+        </h3>
+        <p>Calories: <%= food.calories %>
+        </p>
+        <p>Protein: <%= food.protein %>g</p>
+        <p>Carbs: <%= food.carbs %>g</p>
+        <p>Fats: <%= food.fats %>g</p>
+      </div>
+      <% }) %>
+  </div>
+</section>
+
 <%- include('partials/footer') %>
