@@ -1,0 +1,9 @@
+body { font-family: Arial, sans-serif; margin: 0; padding: 0; background: #f6f6f6; color: #222; }
+header { background: #2c3e50; color: white; padding: 10px 20px; }
+header a { color: white; text-decoration: none; }
+main { padding: 20px; }
+table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+table, th, td { border: 1px solid #ddd; }
+th, td { padding: 8px; text-align: left; }
+.error { color: red; }
+footer { background: #eee; padding: 10px 20px; margin-top: 20px; }
