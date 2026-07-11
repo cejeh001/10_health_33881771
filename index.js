@@ -9,8 +9,8 @@ const PORT = process.env.PORT || 8000;
 // MySQL connection pool - update credentials if needed
 const pool = mysql.createPool({
   host: process.env.DB_HOST || 'localhost',
-  user: process.env.DB_USER || 'root',
-  password: process.env.DB_PASS || 'Chicken5',
+  user: process.env.DB_USER || 'gold',
+  password: process.env.DB_PASS || 'qwertyuiop',
   database: process.env.DB_NAME || 'health',
   waitForConnections: true,
   connectionLimit: 10,
