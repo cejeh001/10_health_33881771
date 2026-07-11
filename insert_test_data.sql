@@ -1,7 +1,7 @@
 USE food_macro_db;
 
 -- default login for marking
-INSERT IGNORE INTO users (username, password) VALUES ('gold', 'smiths');
+INSERT IGNORE INTO users (username, password) VALUES ('gold', 'smiths123ABC$');
 
 -- sample foods
 INSERT INTO foods (name, calories, protein, carbs, fats) VALUES
