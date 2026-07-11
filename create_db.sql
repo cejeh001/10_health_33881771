@@ -1,10 +1,15 @@
--- create database and tables
+CREATE DATABASE IF NOT EXISTS health;
+USE health;
 
 DROP TABLE IF EXISTS foods;
 DROP TABLE IF EXISTS users;
 
-CREATE DATABASE IF NOT EXISTS health;
-USE health;
+CREATE USER IF NOT EXISTS 'gold'@'localhost'
+IDENTIFIED BY 'qwertyuiop';
+
+GRANT ALL PRIVILEGES ON health.* TO 'gold'@'localhost';
+
+FLUSH PRIVILEGES;
 
 CREATE TABLE IF NOT EXISTS users (
   id INT AUTO_INCREMENT PRIMARY KEY,
